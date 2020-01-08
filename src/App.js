@@ -4,42 +4,41 @@ import "react-datepicker/dist/react-datepicker.css";
 import CommentModal from "./component/CommentModal";
 import InfoCard from "./component/InfoCard";
 import PostCard from "./component/PostCard";
-import Loader from './component/Loader'
-import axios from 'axios';
+import Loader from './component/Loader';
+import apiCall from "./appService";
 
 function App() {
   const [ posts, setPosts ] = useState([]);
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-      axios.get('https://api.producthunt.com/v1/posts', {
-          headers:{
-              Authorization: 'Bearer Xbdpx_jQy6cWVQE-rfPPso8-F_PZZrgItIDRGKumkIw',
-          }
-      })
+      apiCall('/posts')
       .then(function (response) {
           setLoading(false);
           if(response.data && response.data.posts){
               setPosts(response.data.posts);
           }
-          console.log(response);
       })
       .catch(function (error) {
           setLoading(false);
-          // handle error
-          console.log(error);
       });
   }, []);
+
   const [ commentModalShow, setCommentModalShow ] = useState(false);
   const [ filterDate, setFilterDate ] = useState(new Date());
-  const productClick = (e) => {
-      console.log('e', e.target);
-      if(e.target.id === 'like-btn') {
-          console.log('like logic');
-      } else {
-          setCommentModalShow(true);
-      }
-
+  const postLike = (id) => {
+      console.log('post like');
+  };
+  const postComment = (postId) => {
+      console.log('post comment');
+      setCommentModalShow(true);
+      apiCall('/comments?search[post_id]='+postId)
+          .then(function (response) {
+              console.log('error', response);
+          })
+          .catch(function (error) {
+              console.log('error', error);
+      });
   };
   const onProductFilter = (date) => {
       setFilterDate(date);
@@ -74,11 +73,11 @@ function App() {
                     </div>
                 </div>
                 <div className="col-md-8 col-lg-9 pt-2">
-                    <div className="row m-0" onClick={(e) => productClick(e)}>
+                    <div className="row m-0">
                         {
                             loading && !posts.length ? <Loader /> :
                             posts && posts.length ? posts.map((post) =>
-                                <PostCard key={post.id} post={post}  />
+                                <PostCard key={post.id} post={post} postLikeEvent={postLike} postCommentEvent={postComment}  />
                             ) : <div className="w-100 text-center"><h4>No Post Found</h4></div>
                         }
                     </div>

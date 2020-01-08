@@ -4,10 +4,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import CommentModal from "./component/CommentModal";
 import InfoCard from "./component/InfoCard";
 import PostCard from "./component/PostCard";
+import Loader from './component/Loader'
 import axios from 'axios';
 
 function App() {
   const [ posts, setPosts ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
+
   useEffect(() => {
       axios.get('https://api.producthunt.com/v1/posts', {
           headers:{
@@ -15,13 +18,14 @@ function App() {
           }
       })
       .then(function (response) {
-          // handle success
+          setLoading(false);
           if(response.data && response.data.posts){
               setPosts(response.data.posts);
           }
           console.log(response);
       })
       .catch(function (error) {
+          setLoading(false);
           // handle error
           console.log(error);
       });
@@ -72,9 +76,10 @@ function App() {
                 <div className="col-md-8 col-lg-9 pt-2">
                     <div className="row m-0" onClick={(e) => productClick(e)}>
                         {
+                            loading && !posts.length ? <Loader /> :
                             posts && posts.length ? posts.map((post) =>
-                                <PostCard key={post.id} id={post.id} name={post.name} imageUrl={post.thumbnail.image_url}  />
-                            ) : ''
+                                <PostCard key={post.id} post={post}  />
+                            ) : <div className="w-100 text-center"><h4>No Post Found</h4></div>
                         }
                     </div>
                 </div>

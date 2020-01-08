@@ -11,6 +11,7 @@ function App() {
   const [ posts, setPosts ] = useState([]);
   const [ comments, setComments ] = useState([]);
   const [ commentsLoading, setCommentsLoading ] = useState(false);
+  const [ likesLoading, setLikesLoading ] = useState(false);
 
   const [ likes, setLikes ] = useState([]);
   const [ loading, setLoading ] = useState(true);
@@ -30,8 +31,41 @@ function App() {
 
   const [ commentModalShow, setCommentModalShow ] = useState(false);
   const [ filterDate, setFilterDate ] = useState(new Date());
-  const postLike = (id) => {
-      console.log('post like');
+  const postLike = (postId) => {
+      setLikes([]);
+      setLikesLoading(true);
+      const index = posts.findIndex((d) => d.id === postId);
+      let voteCount = posts[index].votes_count;
+        if(!posts[index].current_user.voted_for_post) {
+            voteCount = voteCount + 1;
+        } else {
+            voteCount = voteCount -1;
+        }
+
+      const p = [
+          ...posts.slice(0, index),
+          {
+              ...posts[index],
+              votes_count: voteCount,
+              current_user: {
+                  ...posts[index].current_user,
+                  voted_for_post: !posts[index].current_user.voted_for_post
+              }
+           },
+          ...posts.slice(index + 1)
+      ];
+      setPosts(p);
+
+      apiCall(`/posts/${postId}/votes`)
+          .then(function (response) {
+              setLikesLoading(false);
+              if(response?.data?.votes) {
+                  setLikes(response.data.votes);
+              }
+          })
+          .catch(function (error) {
+              setLikesLoading(false);
+          });
   };
   const postComment = (postId) => {
       setComments([]);
@@ -51,7 +85,7 @@ function App() {
   const onProductFilter = (date) => {
       setFilterDate(date);
   };
-  console.log('posts', posts);
+
   return (
     <div className="">
         <header className="py-2 px-3">
@@ -69,15 +103,15 @@ function App() {
                     </div>
                     <div className="input-group py-2 ">
                         <button className="btn btn-primary border" type="button">
-                            Filter
-                        </button>
-                        <button className="btn btn-primary border" type="button">
                             Clear Filter
                         </button>
                     </div>
                     <hr />
                     <div className="py-2 " style={{ overflowY: "auto", maxHeight: 350 }}>
-                        {/*<InfoCard imageUrl="https://www.gstatic.com/webp/gallery/2.jpg" />*/}
+                        {
+                            likesLoading && !likes.length ? <Loader /> :
+                            likes && likes.length ? likes.map(like => <InfoCard key={like.id} data={like} />): ''
+                        }
                     </div>
                 </div>
                 <div className="col-md-8 col-lg-9 pt-2">

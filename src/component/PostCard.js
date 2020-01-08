@@ -4,7 +4,7 @@ import { faThumbsUp, faComment } from '@fortawesome/free-solid-svg-icons';
 
 function PostCard(props) {
     const { post, postLikeEvent, postCommentEvent } = props;
-    const { name, thumbnail: { image_url }, id: postId, votes_count, comments_count } = post;
+    const { name, thumbnail: { image_url }, id: postId, votes_count, comments_count, current_user: { voted_for_post} } = post;
     return (
         <div className="col-md-4 mb-2 p-1">
             <div className="border px-3 py-1">
@@ -15,7 +15,7 @@ function PostCard(props) {
                     <img alt="img" className="w-100" src={image_url} />
                 </div><hr />
                 <div className="d-flex cursor-pointer">
-                    <div className="w-50" onClick={() => postLikeEvent(postId)}>
+                    <div className="w-50" onClick={() => postLikeEvent(postId)} style={{ color: voted_for_post ? 'green' : ''}}>
                        <FontAwesomeIcon icon={faThumbsUp} />
                        <span className="ml-1">{votes_count}</span>
                     </div>

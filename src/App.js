@@ -6,6 +6,7 @@ import InfoCard from "./component/InfoCard";
 import PostCard from "./component/PostCard";
 import Loader from './component/Loader';
 import apiCall from "./appService";
+import moment from 'moment';
 
 function App() {
   const [ posts, setPosts ] = useState([]);
@@ -16,21 +17,31 @@ function App() {
   const [ likes, setLikes ] = useState([]);
   const [ loading, setLoading ] = useState(true);
 
-  useEffect(() => {
-      apiCall('/posts')
-      .then(function (response) {
-          setLoading(false);
-          if(response.data && response.data.posts){
-              setPosts(response.data.posts);
-          }
-      })
-      .catch(function (error) {
-          setLoading(false);
-      });
-  }, []);
-
   const [ commentModalShow, setCommentModalShow ] = useState(false);
   const [ filterDate, setFilterDate ] = useState(new Date());
+
+  const getPosts = (d) => {
+      const date = moment(d).format('YYYY-MM-DD');
+      setLoading(true);
+      setPosts([]);
+      setLikes([]);
+      setComments([]);
+      apiCall('/posts?day='+ date)
+          .then(function (response) {
+              setLoading(false);
+              if(response.data && response.data.posts){
+                  setPosts(response.data.posts);
+              }
+          })
+          .catch(function (error) {
+              setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+      getPosts(filterDate);
+  }, []);
+
   const postLike = (postId) => {
       setLikes([]);
       setLikesLoading(true);
@@ -82,8 +93,14 @@ function App() {
               setCommentsLoading(false);
       });
   };
-  const onProductFilter = (date) => {
+  const onFilter = (date) => {
       setFilterDate(date);
+      getPosts(date);
+  };
+
+  const clearFilter = (date) => {
+      setFilterDate(new Date);
+      getPosts(new Date);
   };
 
   return (
@@ -98,11 +115,12 @@ function App() {
                     <div className="input-group">
                         <DatePicker
                             selected={filterDate}
-                            onChange={(date) => onProductFilter(date)}
+                            // dateFormat="dd-MM-yyyy"
+                            onChange={(date) => onFilter(date)}
                         />
                     </div>
                     <div className="input-group py-2 ">
-                        <button className="btn btn-primary border" type="button">
+                        <button className="btn btn-primary border" type="button" onClick={() => clearFilter()}>
                             Clear Filter
                         </button>
                     </div>

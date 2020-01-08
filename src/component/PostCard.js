@@ -19,10 +19,13 @@ function PostCard(props) {
                        <FontAwesomeIcon icon={faThumbsUp} />
                        <span className="ml-1">{votes_count}</span>
                     </div>
-                    <div className="w-50 text-right cursor-pointer" onClick={() => postCommentEvent(postId)}>
-                       <FontAwesomeIcon icon={faComment} />
-                       <span className="ml-1">{comments_count}</span>
-                    </div>
+                    {
+                        comments_count ?
+                        <div className="w-50 text-right cursor-pointer" onClick={() => postCommentEvent(postId)}>
+                            <FontAwesomeIcon icon={faComment} />
+                            <span className="ml-1">{comments_count}</span>
+                        </div> : ''
+                    }
                 </div>
             </div>
         </div>

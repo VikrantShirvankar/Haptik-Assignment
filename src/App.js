@@ -9,6 +9,10 @@ import apiCall from "./appService";
 
 function App() {
   const [ posts, setPosts ] = useState([]);
+  const [ comments, setComments ] = useState([]);
+  const [ commentsLoading, setCommentsLoading ] = useState(false);
+
+  const [ likes, setLikes ] = useState([]);
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
@@ -30,14 +34,18 @@ function App() {
       console.log('post like');
   };
   const postComment = (postId) => {
-      console.log('post comment');
+      setComments([]);
+      setCommentsLoading(true);
       setCommentModalShow(true);
       apiCall('/comments?search[post_id]='+postId)
           .then(function (response) {
-              console.log('error', response);
+              setCommentsLoading(false);
+              if(response?.data?.comments) {
+                  setComments(response.data.comments);
+              }
           })
           .catch(function (error) {
-              console.log('error', error);
+              setCommentsLoading(false);
       });
   };
   const onProductFilter = (date) => {
@@ -69,7 +77,7 @@ function App() {
                     </div>
                     <hr />
                     <div className="py-2 " style={{ overflowY: "auto", maxHeight: 350 }}>
-                        <InfoCard />
+                        {/*<InfoCard imageUrl="https://www.gstatic.com/webp/gallery/2.jpg" />*/}
                     </div>
                 </div>
                 <div className="col-md-8 col-lg-9 pt-2">
@@ -84,7 +92,7 @@ function App() {
                 </div>
             </div>
         </div>
-        <CommentModal show={commentModalShow} hide={setCommentModalShow} />
+        <CommentModal loading={commentsLoading} comments={comments} show={commentModalShow} hide={setCommentModalShow} />
     </div>
   );
 }

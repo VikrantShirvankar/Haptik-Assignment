@@ -124,13 +124,12 @@ function App() {
   return (
     <div className="">
         <header className="py-2 px-3">
-            <span style={{ fontSize: 25 }} className="text-white font-weight-bold">Header</span>
+            <span className="text-white font-weight-bold"><h3>post.com</h3></span>
         </header>
         {
           error &&
           <Alert variant="danger" className="text-center">
             Something went wrong. Try again later.
-            like.
           </Alert>
         }
         <div className="container-fluid">

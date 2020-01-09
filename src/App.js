@@ -43,7 +43,7 @@ function App() {
 
   // Initial api call to get post
   useEffect(() => {
-      getPosts(filterDate);
+      getPosts(filterDate); // eslint-disable-next-line
   }, []);
 
   // Function to handle post like dislike

@@ -1,5 +1,7 @@
 import axios from "axios";
 const baseUrl ='https://api.producthunt.com/v1';
+
+// Common function to make get api call
 export default function apiCall (endPoint) {
     return new Promise((resolve, reject) => {
         axios.get(baseUrl + endPoint, {
@@ -7,11 +9,11 @@ export default function apiCall (endPoint) {
                 Authorization: 'Bearer Xbdpx_jQy6cWVQE-rfPPso8-F_PZZrgItIDRGKumkIw',
             }
         })
-            .then(function (response) {
-                resolve(response)
-            })
-            .catch(function (error) {
-                reject(error);
-            });
+        .then(function (response) {
+            resolve(response)
+        })
+        .catch(function (error) {
+            reject(error);
+        });
     });
 };

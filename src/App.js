@@ -9,17 +9,16 @@ import apiCall from "./appService";
 import moment from 'moment';
 
 function App() {
+  // State initialization
   const [ posts, setPosts ] = useState([]);
   const [ comments, setComments ] = useState([]);
-  const [ commentsLoading, setCommentsLoading ] = useState(false);
-  const [ likesLoading, setLikesLoading ] = useState(false);
-
   const [ likes, setLikes ] = useState([]);
+  const [ likesLoading, setLikesLoading ] = useState(false);
   const [ loading, setLoading ] = useState(true);
-
   const [ commentModalShow, setCommentModalShow ] = useState(false);
   const [ filterDate, setFilterDate ] = useState(new Date());
 
+  // Function to get post from api
   const getPosts = (d) => {
       const date = moment(d).format('YYYY-MM-DD');
       setLoading(true);
@@ -38,14 +37,19 @@ function App() {
       });
   };
 
+  // Initial api call to get post
   useEffect(() => {
       getPosts(filterDate);
   }, []);
 
-  const postLike = (postId) => {
+  // Function to handle post like dislike
+  const likePost = (postId) => {
       setLikes([]);
       setLikesLoading(true);
       const index = posts.findIndex((d) => d.id === postId);
+      if(index === -1) {
+        return;
+      }
       let voteCount = posts[index].votes_count;
         if(!posts[index].current_user.voted_for_post) {
             voteCount = voteCount + 1;
@@ -53,7 +57,7 @@ function App() {
             voteCount = voteCount -1;
         }
 
-      const p = [
+      const post = [
           ...posts.slice(0, index),
           {
               ...posts[index],
@@ -65,8 +69,9 @@ function App() {
            },
           ...posts.slice(index + 1)
       ];
-      setPosts(p);
-
+      // set update object in post array
+      setPosts(post);
+      // Api call to get voter of post
       apiCall(`/posts/${postId}/votes`)
           .then(function (response) {
               setLikesLoading(false);
@@ -76,29 +81,34 @@ function App() {
           })
           .catch(function (error) {
               setLikesLoading(false);
-          });
+      });
   };
-  const postComment = (postId) => {
+
+  // Function get post comments
+  const getPostComments = (postId) => {
       setComments([]);
-      setCommentsLoading(true);
+      setLoading(true);
       setCommentModalShow(true);
       apiCall('/comments?search[post_id]='+postId)
           .then(function (response) {
-              setCommentsLoading(false);
+              setLoading(false);
               if(response?.data?.comments) {
                   setComments(response.data.comments);
               }
           })
           .catch(function (error) {
-              setCommentsLoading(false);
+              setLoading(false);
       });
   };
+
+  // Function to filter post by date
   const onFilter = (date) => {
       setFilterDate(date);
       getPosts(date);
   };
 
-  const clearFilter = (date) => {
+  // Function to clear filter
+  const clearFilter = () => {
       setFilterDate(new Date);
       getPosts(new Date);
   };
@@ -137,14 +147,14 @@ function App() {
                         {
                             loading && !posts.length ? <Loader /> :
                             posts && posts.length ? posts.map((post) =>
-                                <PostCard key={post.id} post={post} postLikeEvent={postLike} postCommentEvent={postComment}  />
+                                <PostCard key={post.id} post={post} likePostEvent={likePost} getPostCommentsEvent={getPostComments}  />
                             ) : <div className="w-100 text-center"><h4>No Post Found</h4></div>
                         }
                     </div>
                 </div>
             </div>
         </div>
-        <CommentModal loading={commentsLoading} comments={comments} show={commentModalShow} hide={setCommentModalShow} />
+        <CommentModal loading={loading} comments={comments} show={commentModalShow} hide={setCommentModalShow} />
     </div>
   );
 }

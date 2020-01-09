@@ -5,7 +5,6 @@ import Loader from "./Loader";
 
 function CommentModal(props) {
     const { comments,loading } = props;
-    console.log('comments', comments);
     return (
         <>
             <Modal

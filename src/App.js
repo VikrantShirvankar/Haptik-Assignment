@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Alert } from 'react-bootstrap';
 import CommentModal from "./component/CommentModal";
 import InfoCard from "./component/InfoCard";
 import PostCard from "./component/PostCard";
@@ -17,6 +18,7 @@ function App() {
   const [ loading, setLoading ] = useState(true);
   const [ commentModalShow, setCommentModalShow ] = useState(false);
   const [ filterDate, setFilterDate ] = useState(new Date());
+  const [error, setError] = useState(false);
 
   // Function to get post from api
   const getPosts = (d) => {
@@ -25,6 +27,7 @@ function App() {
       setPosts([]);
       setLikes([]);
       setComments([]);
+      setError(false);
       apiCall('/posts?day='+ date)
           .then(function (response) {
               setLoading(false);
@@ -34,6 +37,7 @@ function App() {
           })
           .catch(function (error) {
               setLoading(false);
+              setError(true);
       });
   };
 
@@ -46,6 +50,7 @@ function App() {
   const likePost = (postId) => {
       setLikes([]);
       setLikesLoading(true);
+      setError(false);
       const index = posts.findIndex((d) => d.id === postId);
       if(index === -1) {
         return;
@@ -81,6 +86,7 @@ function App() {
           })
           .catch(function (error) {
               setLikesLoading(false);
+              setError(true);
       });
   };
 
@@ -89,6 +95,7 @@ function App() {
       setComments([]);
       setLoading(true);
       setCommentModalShow(true);
+      setError(false);
       apiCall('/comments?search[post_id]='+postId)
           .then(function (response) {
               setLoading(false);
@@ -98,6 +105,7 @@ function App() {
           })
           .catch(function (error) {
               setLoading(false);
+              setError(true);
       });
   };
 
@@ -118,6 +126,13 @@ function App() {
         <header className="py-2 px-3">
             <span style={{ fontSize: 25 }} className="text-white font-weight-bold">Header</span>
         </header>
+        {
+          error &&
+          <Alert variant="danger" className="text-center">
+            Something went wrong. Try again later.
+            like.
+          </Alert>
+        }
         <div className="container-fluid">
             <div className="row content">
                 <div className="col-md-4 col-lg-3 sidenav border pt-2">
@@ -135,6 +150,7 @@ function App() {
                         </button>
                     </div>
                     <hr />
+                    { likes && likes.length ? <div className="py-2">People Like the post</div> : ''}
                     <div className="py-2 " style={{ overflowY: "auto", maxHeight: 350 }}>
                         {
                             likesLoading && !likes.length ? <Loader /> :

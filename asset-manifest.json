@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/haptik-assignment/static/css/main.a38192f7.chunk.css",
+    "main.js": "/haptik-assignment/static/js/main.f6ba3018.chunk.js",
+    "main.js.map": "/haptik-assignment/static/js/main.f6ba3018.chunk.js.map",
+    "runtime-main.js": "/haptik-assignment/static/js/runtime-main.69e3a898.js",
+    "runtime-main.js.map": "/haptik-assignment/static/js/runtime-main.69e3a898.js.map",
+    "static/css/2.23be29d4.chunk.css": "/haptik-assignment/static/css/2.23be29d4.chunk.css",
+    "static/js/2.6c27471b.chunk.js": "/haptik-assignment/static/js/2.6c27471b.chunk.js",
+    "static/js/2.6c27471b.chunk.js.map": "/haptik-assignment/static/js/2.6c27471b.chunk.js.map",
+    "index.html": "/haptik-assignment/index.html",
+    "precache-manifest.d14242d0a983fa6cc936dbc48131f245.js": "/haptik-assignment/precache-manifest.d14242d0a983fa6cc936dbc48131f245.js",
+    "service-worker.js": "/haptik-assignment/service-worker.js",
+    "static/css/2.23be29d4.chunk.css.map": "/haptik-assignment/static/css/2.23be29d4.chunk.css.map",
+    "static/css/main.a38192f7.chunk.css.map": "/haptik-assignment/static/css/main.a38192f7.chunk.css.map",
+    "static/js/2.6c27471b.chunk.js.LICENSE": "/haptik-assignment/static/js/2.6c27471b.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.69e3a898.js",
+    "static/css/2.23be29d4.chunk.css",
+    "static/js/2.6c27471b.chunk.js",
+    "static/css/main.a38192f7.chunk.css",
+    "static/js/main.f6ba3018.chunk.js"
+  ]
+}

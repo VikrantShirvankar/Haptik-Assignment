@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Haptik-Assignment/static/css/main.a38192f7.chunk.css",
-    "main.js": "/Haptik-Assignment/static/js/main.f6ba3018.chunk.js",
-    "main.js.map": "/Haptik-Assignment/static/js/main.f6ba3018.chunk.js.map",
+    "main.js": "/Haptik-Assignment/static/js/main.ad48cf13.chunk.js",
+    "main.js.map": "/Haptik-Assignment/static/js/main.ad48cf13.chunk.js.map",
     "runtime-main.js": "/Haptik-Assignment/static/js/runtime-main.94d16138.js",
     "runtime-main.js.map": "/Haptik-Assignment/static/js/runtime-main.94d16138.js.map",
     "static/css/2.23be29d4.chunk.css": "/Haptik-Assignment/static/css/2.23be29d4.chunk.css",
     "static/js/2.6c27471b.chunk.js": "/Haptik-Assignment/static/js/2.6c27471b.chunk.js",
     "static/js/2.6c27471b.chunk.js.map": "/Haptik-Assignment/static/js/2.6c27471b.chunk.js.map",
     "index.html": "/Haptik-Assignment/index.html",
-    "precache-manifest.4f27678f3271537ddac2a1b4a1bc30d4.js": "/Haptik-Assignment/precache-manifest.4f27678f3271537ddac2a1b4a1bc30d4.js",
+    "precache-manifest.ebc3436e2aff49555d3228488da14588.js": "/Haptik-Assignment/precache-manifest.ebc3436e2aff49555d3228488da14588.js",
     "service-worker.js": "/Haptik-Assignment/service-worker.js",
     "static/css/2.23be29d4.chunk.css.map": "/Haptik-Assignment/static/css/2.23be29d4.chunk.css.map",
     "static/css/main.a38192f7.chunk.css.map": "/Haptik-Assignment/static/css/main.a38192f7.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.23be29d4.chunk.css",
     "static/js/2.6c27471b.chunk.js",
     "static/css/main.a38192f7.chunk.css",
-    "static/js/main.f6ba3018.chunk.js"
+    "static/js/main.ad48cf13.chunk.js"
   ]
 }
